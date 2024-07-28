@@ -1,15 +1,39 @@
 /** @format */
-
-import React from "react";
+import MeetingTypeList from "@/components/MeetingTypeList";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
 	const now = new Date();
 	// const time = now.toLocaleTimeString();
 	// const date = now.toLocaleDateString();
 
+	const time = now.toLocaleTimeString("en-IN", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: true,
+	});
+	const date = now.toLocaleDateString("en-IN", {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+	/*
+will cause re renders so add another component
+	const [now, setNow] = useState(new Date());
+
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			setNow(new Date());
+		}, 1000);
+
+		return () => clearInterval(intervalId);
+	}, []);
+
 	const time = now.toLocaleTimeString([], {
 		hour: "2-digit",
 		minute: "2-digit",
+		second: "2-digit",
 		hour12: true,
 	});
 	const date = now.toLocaleDateString("en-US", {
@@ -18,7 +42,7 @@ const Home = () => {
 		month: "long",
 		day: "numeric",
 	});
-
+*/
 	return (
 		<section className='flex size-full flex-col gap-10 text-white'>
 			<h1 className='text-3xl font-bold'>
@@ -40,6 +64,8 @@ const Home = () => {
 					</div>
 				</div>
 			</h1>
+
+			<MeetingTypeList />
 		</section>
 	);
 };
