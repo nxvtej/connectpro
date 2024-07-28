@@ -19,14 +19,12 @@ const Navbar = () => {
 				/>
 
 				<p className='text-[26px] font-extrabold text-white max-sm:hidden'>
-					Connect Pro``
+					Connect Pro
 				</p>
 			</Link>
 
 			<div className='flex-between gap-5'>
-				<SignIn>
-					<UserButton />
-				</SignIn>
+				<UserButton />
 
 				<Mobilenav />
 			</div>
