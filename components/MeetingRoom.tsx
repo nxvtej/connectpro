@@ -3,11 +3,13 @@
 import { cn } from "@/lib/utils";
 import {
 	CallControls,
+	CallingState,
 	CallParticipantsList,
 	CallRecordingList,
 	CallStatsButton,
 	PaginatedGridLayout,
 	SpeakerLayout,
+	useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import React, { useState } from "react";
 import {
@@ -21,6 +23,7 @@ import {
 import { LayoutList, Search, Users } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import EndCallButton from "./EndCallButton";
+import Loader from "./Loader";
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 const MeetingRoom = () => {
@@ -28,6 +31,13 @@ const MeetingRoom = () => {
 	const isPersonalRoom = !!searchParams.get("personal");
 	const [layout, setlayout] = useState<CallLayoutType>("speaker-left");
 	const [showParticipants, setShowParticipants] = useState(false);
+
+	// function to exposes all state hooks via this
+	const { useCallCallingState } = useCallStateHooks();
+	const callingState = useCallCallingState();
+
+	if (callingState !== CallingState.JOINED) return <Loader />;
+
 	const CallLayout = () => {
 		switch (layout) {
 			case "grid":
@@ -54,7 +64,7 @@ const MeetingRoom = () => {
 				</div>
 			</div>
 
-			<div className='fixed  bottom-0 flex w-full items-center justify-center gap-5'>
+			<div className='fixed  bottom-0 flex w-full items-center justify-center gap-5 flex-wrap'>
 				<CallControls />
 
 				<DropdownMenu>
