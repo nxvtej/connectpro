@@ -7,10 +7,13 @@ import { useRouter } from "next/navigation";
 import MeetingModal from "./MeetingModal";
 import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { useToast } from "@/components/ui/use-toast";
 // import { useRouter } from "next/router";
 // using newer one caused its designed for app directory
 
 const MeetingTypeList = () => {
+	const { toast } = useToast();
+
 	const router = useRouter();
 	const [meetingState, setMeetingState] = useState<
 		"isScheduleMeeting" | "isJoiningMeeting" | "isInstantMeeting" | undefined
@@ -28,6 +31,11 @@ const MeetingTypeList = () => {
 		if (!user || !client) return;
 
 		try {
+			if (!values.dateTime) {
+				toast({
+					title: "Please select a date and Time",
+				});
+			}
 			// generate random id fir call id
 			const id = crypto.randomUUID();
 			const call = client.call("default", id);
@@ -55,9 +63,15 @@ const MeetingTypeList = () => {
 			if (!values.description) {
 				router.push(`/meeting/${call.id}`);
 			}
+			toast({
+				title: "meeting created",
+			});
 		} catch (e) {
 			console.log("in catch");
 			console.error(e);
+			toast({
+				title: "Failed to create meeting",
+			});
 		}
 	};
 
