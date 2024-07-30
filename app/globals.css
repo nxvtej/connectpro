@@ -52,6 +52,10 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+img[src*="yoom-logo.svg"] {
+  filter: invert(1);
+}
+
 
 /* ==== clerk class override ===== */
 
