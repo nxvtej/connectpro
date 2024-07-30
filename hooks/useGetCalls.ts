@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk"
 import { useEffect, useState } from "react"
@@ -11,8 +12,20 @@ export const useGetCalls = () => {
 
     useEffect(() => {
         const loadCalls = async () => {
-            if (!client || user?.id) return;
+            console.log("hi there 2")
+
+            // if (!client || user?.id) return;
+
+            if (!client) {
+                toast({ title: "client not found" })
+                return
+            }
+            if (!user) {
+                toast({ title: "user not found" })
+                return
+            }
             setIsLoading(true);
+            console.log("hi there")
 
             try {
                 const { calls } = await client.queryCalls({
@@ -28,7 +41,7 @@ export const useGetCalls = () => {
                     }
                 })
 
-
+                console.log(calls)
                 setCalls(calls)
 
             } catch (error) {

@@ -4,11 +4,12 @@
 import Meeting from "@/app/(root)/meeting/[id]/page";
 import { useGetCalls } from "@/hooks/useGetCalls";
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import MeetingCard from "./MeetingCard";
 import Loader from "./Loader";
+import { useToast } from "./ui/use-toast";
 
 const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 	const { endedCalls, upcomingCalls, callRecordings, isLoading } =
@@ -16,6 +17,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
 	const router = useRouter();
 	const [recordings, setRecordings] = useState<CallRecording[]>([]);
+	const { toast } = useToast();
 	const getCalls = () => {
 		switch (type) {
 			case "ended":
@@ -44,14 +46,19 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
 	useEffect(() => {
 		const fetchRecordings = async () => {
-			const callData = await Promise.all(
-				callRecordings.map((meeting) => meeting.queryRecordings())
-			);
-			const recordings = callData
-				.filter((call) => call.recordings.length > 0)
-				.flatMap((call) => call.recordings);
+			try {
+				const callData = await Promise.all(
+					callRecordings.map((meeting) => meeting.queryRecordings())
+				);
+				const recordings = callData
+					.filter((call) => call.recordings.length > 0)
+					.flatMap((call) => call.recordings);
 
-			setRecordings(recordings);
+				setRecordings(recordings);
+			} catch (error) {
+				console.error(error);
+				toast({ title: "Try again later" });
+			}
 		};
 
 		if (type === "recordings") fetchRecordings();
@@ -74,9 +81,9 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 								: "/icons/recordings.svg"
 						}
 						title={
-							(meeting as Call).state?.custom.description.substring(0, 26) ||
-							(meeting as CallRecording).filename.substring(0, 20) ||
-							"No Description"
+							(meeting as Call).state?.custom?.description?.substring(0, 26) ||
+							(meeting as CallRecording)?.filename?.substring(0, 20) ||
+							"Personal Meeting"
 						}
 						date={
 							(meeting as Call).state?.startsAt?.toLocaleString() ||

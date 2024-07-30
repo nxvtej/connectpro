@@ -10,6 +10,7 @@ import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "./ui/textarea";
 import ReactDatePicker from "react-datepicker";
+import { Input } from "./ui/input";
 
 // import { useRouter } from "next/router";
 // using newer one caused its designed for app directory
@@ -103,7 +104,7 @@ const MeetingTypeList = () => {
 				img='/icons/recordings.svg'
 				title='View Recordings'
 				description='CheckOut your recordings'
-				handleClick={() => setMeetingState("isJoiningMeeting")}
+				handleClick={() => router.push("/recordings")}
 				// handleClick={() => router.push("/recordings")}
 				className='bg-purple-1'
 			/>
@@ -171,6 +172,19 @@ const MeetingTypeList = () => {
 				buttonText='Start Meeting'
 				handleClick={() => createMeeting()}
 			/>
+			<MeetingModal
+				isOpen={meetingState === "isJoiningMeeting"}
+				onClose={() => setMeetingState(undefined)}
+				title='Type link here'
+				className='text-center'
+				buttonText='Join Meeting'
+				handleClick={() => router.push(values.link)}>
+				<Input
+					placeholder='meeting link'
+					className='border-none bg-dark-2 focus-visible:ring-0 focus-visible:ring-offset-0'
+					onChange={(e) => setValues({ ...values, link: e.target.value })}
+				/>
+			</MeetingModal>
 		</section>
 	);
 };
