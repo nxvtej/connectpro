@@ -6,7 +6,7 @@ import React from "react";
 const SignUpPage = () => {
 	return (
 		<main className='flex-center  h-screen'>
-			<SignInButton />
+			<SignUp />
 		</main>
 	);
 };
