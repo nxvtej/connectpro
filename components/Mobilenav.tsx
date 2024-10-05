@@ -39,12 +39,10 @@ const Mobilenav = () => {
 							src={"/icons/logo.svg"}
 							width={32}
 							height={32}
-							alt='Connect Pro'
+							alt='Meet'
 							className='max-sm:size-10'
 						/>
-						<p className='text-[26px] font-extrabold text-white '>
-							Connect Pro
-						</p>
+						<p className='text-[26px] font-extrabold text-white '>Meet</p>
 					</div>
 
 					<Link href='/' className='flex items-center gap-1'>

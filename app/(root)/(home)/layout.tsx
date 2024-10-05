@@ -6,8 +6,8 @@ import { Metadata } from "next";
 import React, { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "Connect Pro",
-	description: "Developed by Navdeep",
+	title: "Meet",
+	description: "Meet navi",
 };
 
 const HomeLayout = ({ children }: { children: ReactNode }) => {
